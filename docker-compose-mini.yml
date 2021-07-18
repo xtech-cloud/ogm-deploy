@@ -3,7 +3,6 @@ version: "3"
 services:
   apisix-dashboard:
     image: apache/apisix-dashboard:2.7
-    container_name: apisix-dashboard
     restart: always
     volumes:
     - ./apisix-dashboard/conf/conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml
@@ -11,10 +10,10 @@ services:
     - "9000:9000"
     networks:
       xtc:
+        ipv4_address: 10.1.250.11
 
   apisix:
     image: apache/apisix:2.7-alpine
-    container_name: apisix
     restart: always
     volumes:
       - ./apisix/log:/usr/local/apisix/logs
@@ -22,41 +21,46 @@ services:
     depends_on:
       - etcd
     ports:
-      - "9080:9080/tcp"
-      - "9443:9443/tcp"
+      - "80:9080/tcp"
+      - "443:9443/tcp"
     networks:
       xtc:
+        ipv4_address: 10.1.254.11
 
   etcd:
     image: bitnami/etcd:3.5.0
-    container_name: etcd
     user: root
     restart: always
     volumes:
       - ./etcd/conf/etcd.conf.yml:/opt/bitnami/etcd/conf/etcd.conf.yml
-      - ./etcd/data:/bitnami/etcd
+      - ./etcd/data:/bitnami/etcd/
     environment:
       ETCD_ENABLE_V2: "true"
       ALLOW_NONE_AUTHENTICATION: "yes"
       ETCD_ADVERTISE_CLIENT_URLS: "http://0.0.0.0:2379"
       ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
     ports:
-      - "2379:2379/tcp"
+    - "2379:2379/tcp"
     networks:
       xtc:
+        ipv4_address: 10.1.1.21
 
   consul:
     image: consul:1.10.0
-    container_name: consul
     restart: always
     command: agent -server -bootstrap-expect=1 -bind=0.0.0.0 -client=0.0.0.0 -ui
     volumes:
       - ./consul/data:/consul/data
     ports:
-      - "8500:8500/tcp"
+    - "8500:8500/tcp"
     networks:
       xtc:
+        ipv4_address: 10.1.1.11
 
 networks:
   xtc:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 10.1.0.0/16
