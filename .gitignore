@@ -1,3 +1,4 @@
 apisix/log/
 consul/data/
 ogm-sandbox/bin/
+etcd/home/data/

@@ -20,8 +20,26 @@ services:
       xtc:
         ipv4_address: 10.1.1.21
 
+  micro-api:
+    image: xtechcloud/ogm-micro:v2.9.3
+    restart: always
+    command: api --namespace=xtc.api --address=:18800
+    environment:
+      MICRO_REGISTRY: "etcd"
+      MICRO_REGISTRY_ADDRESS: "etcd:2379"
+    ports:
+      - "18800:18800"
+    networks:
+      xtc:
+        ipv4_address: 10.1.250.10
+    links:
+      - etcd:etcd
+    depends_on:
+      - etcd
+
   envoy:
     image: envoyproxy/envoy:v1.19.0
+    restart: always
     ports:
       - "80:8801"
       - "9901:9901"
@@ -34,6 +52,7 @@ services:
 
   ogm-sandbox:
     image: xtechcloud/ogm-sandbox:v3.12
+    restart: always
     ports:
       - "8822:22"
       - "18801-18899:18801-18899"
