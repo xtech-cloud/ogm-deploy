@@ -18,7 +18,7 @@ services:
     - "2380:2380/tcp"
     networks:
       xtc:
-        ipv4_address: 10.1.1.21
+        ipv4_address: 10.1.1.11
 
   apisix-dashboard:
     image: apache/apisix-dashboard:2.7
