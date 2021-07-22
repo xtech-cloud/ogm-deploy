@@ -20,35 +20,31 @@ services:
       xtc:
         ipv4_address: 10.1.1.21
 
-  micro-api:
-    image: xtechcloud/ogm-micro:v2.9.3
+  apisix-dashboard:
+    image: apache/apisix-dashboard:2.7
     restart: always
-    command: api --namespace=xtc.api --address=:18800
-    environment:
-      MICRO_REGISTRY: "etcd"
-      MICRO_REGISTRY_ADDRESS: "etcd:2379"
-    ports:
-      - "18800:18800"
-    networks:
-      xtc:
-        ipv4_address: 10.1.250.10
-    links:
-      - etcd:etcd
-    depends_on:
-      - etcd
-
-  envoy:
-    image: envoyproxy/envoy:v1.19.0
-    restart: always
-    ports:
-      - "80:8801"
-      - "9901:9901"
     volumes:
-      - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml
-      - ./envoy/api.pb:/etc/envoy/api.pb
+    - ./apisix-dashboard/conf/conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml
+    ports:
+    - "9000:9000"
     networks:
       xtc:
         ipv4_address: 10.1.250.11
+
+  apisix:
+    image: apache/apisix:2.7-alpine
+    restart: always
+    volumes:
+      - ./apisix/log:/usr/local/apisix/logs
+      - ./apisix/conf/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+    depends_on:
+      - etcd
+    ports:
+      - "80:9080/tcp"
+      - "443:9443/tcp"
+    networks:
+      xtc:
+        ipv4_address: 10.1.254.11
 
   mysql:
     image: mysql:8.0.26

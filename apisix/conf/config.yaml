@@ -20,7 +20,3 @@ etcd:
   prefix: "/apisix"               # apisix configurations prefix
   timeout: 30                     # 30 seconds
 
-discovery:
-  consul_kv:
-    servers:
-      - "http://consul:8500"
