@@ -45,6 +45,8 @@ services:
     networks:
       xtc:
         ipv4_address: 10.1.254.11
+    links:
+      - etcd:etcd
 
   mysql:
     image: mysql:8.0.26
