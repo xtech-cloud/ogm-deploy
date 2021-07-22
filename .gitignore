@@ -1,7 +1,6 @@
-apisix/log/
-consul/data/
-ogm-sandbox/data/bin/
 etcd/home/data/
 mysql/data/
 mongo/data/
 redis/data/
+apisix/log/
+ogm-sandbox/msa/bin/
