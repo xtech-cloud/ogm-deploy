@@ -1,6 +1,6 @@
 service:
     name: xtc.api.ogm.startkit
-    address: :16799
+    address: :18899
     ttl: 15
     interval: 10
 logger:
