@@ -4,3 +4,4 @@ mongo/data/
 redis/data/
 apisix/log/
 ogm-sandbox/msa/bin/
+proto/
