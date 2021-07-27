@@ -2,6 +2,7 @@ etcd/home/data/
 mysql/data/
 mongo/data/
 redis/data/
+minio/data/
 apisix/log/
 ogm-sandbox/msa/bin/
 proto/
