@@ -86,7 +86,7 @@ services:
         ipv4_address: 10.1.2.31
 
   minio:
-    image: minio/minio:RELEASE.2021-07-21T22-15-23Z
+    image: minio/minio:RELEASE.2021-07-27T02-40-15Z
     restart: always
     ports:
       - "9000:9000"
