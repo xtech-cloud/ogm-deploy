@@ -1,0 +1,17 @@
+service:
+  name: xtc.ogm.file
+  address: :18808
+  ttl: 15
+  interval: 10
+logger:
+  level: trace
+  dir: /var/log/ogm/
+database:
+  driver: mysql
+  mysql:
+    address: mysql:3306
+    user: root
+    password: mysql@XTC
+    db: ogm
+  sqlite:
+    path: /tmp/ogm-file.db
