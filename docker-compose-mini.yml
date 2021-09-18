@@ -109,12 +109,12 @@ services:
     ports:
       - "18804:18804"
     volumes:
-      - ./ogm-config/license.yml:/etc/ogm/license.yml
+      - ./ogm-config/license.yaml:/etc/ogm/license.yaml
     links:
       - etcd:etcd
       - mysql:mysql
     environment:
-      MSA_CONFIG_DEFINE: '{"source":"file","prefix":"/etc/ogm/","key":"license.yml"}'
+      MSA_CONFIG_DEFINE: '{"source":"file","prefix":"/etc/ogm/","key":"license.yaml"}'
     networks:
       xtc:
         ipv4_address: 10.1.188.4
