@@ -101,21 +101,25 @@ services:
       xtc:
         ipv4_address: 10.1.2.41
 
-  ogm-license:
-    image: xtechcloud/ogm-license:v3.0.1
+  ogm-sandbox:
+    image: xtechcloud/ogm-sandbox:v3.12
     restart: always
     ports:
-      - "18804:18804"
+      - "8822:22"
+      - "18801-18899:18801-18899"
     volumes:
-      - ./ogm-config/license.yml:/etc/ogm/license.yml
+      - ./ogm-sandbox:/ogm
+    environment:
+      MSA_REGISTRY_PLUGIN: "etcd"
+      MSA_REGISTRY_ADDRESS: "etcd:2379"
+    networks:
+      xtc:
+        ipv4_address: 10.1.100.11
     links:
       - etcd:etcd
       - mysql:mysql
-    environment:
-      MSA_CONFIG_DEFINE: '{"source":"file","prefix":"/etc/ogm/","key":"license.yml"}'
-    networks:
-      xtc:
-        ipv4_address: 10.1.188.4
+      - mongo:mongo
+      - redis:redis
 
 networks:
   xtc:
