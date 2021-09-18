@@ -14,7 +14,7 @@ vi /etc/hosts
 安装容器
 
 ```bash
-docker-compose -f ./docker-compose-mini.yml up -d
+docker-compose -f ./docker-compose-dev.yml up -d
 ```
 
 # Small
