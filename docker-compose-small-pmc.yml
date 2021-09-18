@@ -7,10 +7,10 @@ services:
     restart: always
     volumes:
     - ./apisix-dashboard/conf/conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml
-    depends_on:
-      - apisix
     ports:
     - "9999:9000"
+    extra_hosts:
+      - "etcd:10.1.1.11"
     networks:
       xtc:
         ipv4_address: 192.1.250.11
