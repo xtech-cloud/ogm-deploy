@@ -21,7 +21,7 @@ services:
         ipv4_address: 10.1.1.11
 
   apisix-dashboard:
-    image: apache/apisix-dashboard:2.7
+    image: apache/apisix-dashboard:2.8
     restart: always
     volumes:
     - ./apisix-dashboard/conf/conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml
@@ -34,7 +34,7 @@ services:
         ipv4_address: 10.1.250.11
 
   apisix:
-    image: apache/apisix:2.7-alpine
+    image: apache/apisix:2.9-alpine
     restart: always
     volumes:
       - ./apisix/log:/usr/local/apisix/logs
