@@ -8,13 +8,11 @@ services:
     volumes:
       - ./apisix/log:/usr/local/apisix/logs
       - ./apisix/conf/config.yaml:/usr/local/apisix/conf/config.yaml:ro
-    depends_on:
-      - etcd
     ports:
       - "80:9080/tcp"
       - "443:9443/tcp"
-    links:
-      - etcd:etcd
+    extra_hosts:
+      - "etcd:10.1.1.11"
     networks:
       xtc:
         ipv4_address: 192.1.254.11
