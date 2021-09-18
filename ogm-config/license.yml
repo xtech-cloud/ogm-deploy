@@ -1,0 +1,17 @@
+service:
+    name: xtc.ogm.license
+    ttl: 15
+    interval: 10
+    address: :18804
+logger:
+    level: info
+    dir: /var/log/msa/
+database:
+    driver: mysql
+    mysql:
+        address: mysql:3306
+        user: ogm
+        password: ogm@MYSQL
+        db: ogm
+    sqlite:
+        path: /tmp/msa-license.db

@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+
+  apisix-dashboard:
+    image: apache/apisix-dashboard:2.8
+    restart: always
+    volumes:
+    - ./apisix-dashboard/conf/conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml
+    ports:
+    - "9999:9000"
+    extra_hosts:
+      - "etcd:10.1.1.11"
+    networks:
+      xtc:
+        ipv4_address: 192.1.250.11
+
+networks:
+  xtc:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 192.1.250.0/24

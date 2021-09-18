@@ -1,10 +1,10 @@
 version: "3"
 
 services:
-
   etcd:
     image: bitnami/etcd:3.5.0
     user: root
+    restart: always
     volumes:
       - ./etcd/conf/etcd.conf.yml:/opt/bitnami/etcd/conf/etcd.conf.yml
       - ./etcd/home:/bitnami/etcd/
@@ -13,50 +13,118 @@ services:
       ALLOW_NONE_AUTHENTICATION: "yes"
       ETCD_ADVERTISE_CLIENT_URLS: "http://0.0.0.0:2379"
       ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
-    network_mode: "host"
+    ports:
+    - "2379:2379/tcp"
+    - "2380:2380/tcp"
+    networks:
+      xtc:
+        ipv4_address: 10.1.1.11
 
   apisix-dashboard:
-    image: apache/apisix-dashboard:2.7
+    image: apache/apisix-dashboard:2.8
+    restart: always
     volumes:
     - ./apisix-dashboard/conf/conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml
-    network_mode: "host"
+    depends_on:
+      - apisix
+    ports:
+    - "9999:9000"
+    networks:
+      xtc:
+        ipv4_address: 10.1.250.11
 
   apisix:
-    image: apache/apisix:2.7-alpine
+    image: apache/apisix:2.9-alpine
+    restart: always
     volumes:
       - ./apisix/log:/usr/local/apisix/logs
       - ./apisix/conf/config.yaml:/usr/local/apisix/conf/config.yaml:ro
     depends_on:
       - etcd
-    network_mode: "host"
+    ports:
+      - "80:9080/tcp"
+      - "443:9443/tcp"
+    links:
+      - etcd:etcd
+    networks:
+      xtc:
+        ipv4_address: 10.1.254.11
 
   mysql:
     image: mysql:8.0.26
+    restart: always
+    ports:
+      - "3306:3306"
     volumes:
       - ./mysql/data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: "mysql@XTC"
-    network_mode: "host"
+    networks:
+      xtc:
+        ipv4_address: 10.1.2.11
 
   mongo:
     image: mongo:5.0.0
+    restart: always
+    ports:
+      - "27017:27017"
     volumes:
       - ./mongo/data:/data/db
-    network_mode: "host"
+    networks:
+      xtc:
+        ipv4_address: 10.1.2.21
 
   redis:
     image: redis:6.2.4
+    restart: always
+    ports:
+      - "6379:6379"
     volumes:
       - ./redis/data:/data
-    network_mode: "host"
+    networks:
+      xtc:
+        ipv4_address: 10.1.2.31
 
-  sandbox:
-    image: xtechcloud/ogm-sandbox:v3.12
+  minio:
+    image: minio/minio:RELEASE.2021-07-27T02-40-15Z
+    restart: always
+    ports:
+      - "9000:9000"
+      - "9001:9001"
     volumes:
-      - ./ogm-sandbox/data:/ogm
-      - ./ogm-sandbox/conf/sshd_config:/etc/ssh/sshd_config
+      - ./minio/data:/data
+    environment:
+      MINIO_ROOT_USER: "3KJLIOSFODNN0EXAMPO0"
+      MINIO_ROOT_PASSWORD: "vJalrXUtnFEMI/I5MDENG/bPxRfmCYEXAMPLEHEY"
+    command: server /data --console-address ":9001"
+    networks:
+      xtc:
+        ipv4_address: 10.1.2.41
+
+  ogm-sandbox:
+    image: xtechcloud/ogm-sandbox:v3.12
+    restart: always
+    ports:
+      - "8822:22"
+      - "18801-18899:18801-18899"
+    volumes:
+      - ./ogm-sandbox:/ogm
     environment:
       MSA_REGISTRY_PLUGIN: "etcd"
-      MSA_REGISTRY_ADDRESS: "localhost:2379"
-    network_mode: "host"
+      MSA_REGISTRY_ADDRESS: "etcd:2379"
+    networks:
+      xtc:
+        ipv4_address: 10.1.100.11
+    links:
+      - etcd:etcd
+      - mysql:mysql
+      - mongo:mongo
+      - redis:redis
 
+networks:
+  xtc:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 10.1.0.0/16
