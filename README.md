@@ -1,16 +1,5 @@
 # Develop
 
-修改host
-
-```bash
-vi /etc/hosts
-```
-
-加入
-```
-127.0.0.1	etcd
-```
-
 安装容器
 
 ```bash
@@ -29,4 +18,22 @@ docker-compose -f ./docker-compose-small-src.yml up -d
 
 ```bash
 docker-compose -f ./docker-compose-small-dsc.yml up -d
+```
+
+## MSA
+
+```bash
+docker-compose -f ./docker-compose-small-msa.yml up -d
+```
+
+## VPP
+
+```bash
+docker-compose -f ./docker-compose-small-vpp.yml up -d
+```
+
+## PMC
+
+```bash
+docker-compose -f ./docker-compose-small-pmc.yml up -d
 ```

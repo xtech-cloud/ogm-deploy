@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  ogm-license:
+    image: xtechcloud/ogm-license:v3.0.1
+    restart: always
+    ports:
+      - "18804:18804"
+    volumes:
+      - ./ogm-config/license.yaml:/etc/ogm/license.yaml
+    extra_hosts:
+      - "etcd:10.1.1.11"
+      - "mysql:10.1.2.11"
+    environment:
+      MSA_CONFIG_DEFINE: '{"source":"file","prefix":"/etc/ogm/","key":"license.yaml"}'
+    networks:
+      xtc:
+        ipv4_address: 192.1.188.4
+
+networks:
+  xtc:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 192.1.0.0/16
