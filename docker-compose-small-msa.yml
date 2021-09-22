@@ -12,6 +12,8 @@ services:
       - "etcd:10.1.1.11"
       - "mysql:10.1.2.11"
     environment:
+      MSA_REGISTRY_PLUGIN: 'etcd'
+      MSA_REGISTRY_ADDRESS: 'etcd:2379'
       MSA_CONFIG_DEFINE: '{"source":"file","prefix":"/etc/ogm/","key":"license.yaml"}'
     networks:
       xtc:

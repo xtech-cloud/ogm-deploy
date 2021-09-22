@@ -105,21 +105,24 @@ services:
     image: xtechcloud/ogm-sandbox:v3.12
     restart: always
     ports:
-      - "8822:22"
+      - "18800:22"
       - "18801-18899:18801-18899"
     volumes:
-      - ./ogm-sandbox:/ogm
-    environment:
-      MSA_REGISTRY_PLUGIN: "etcd"
-      MSA_REGISTRY_ADDRESS: "etcd:2379"
-    networks:
-      xtc:
-        ipv4_address: 10.1.100.11
+      - ./ogm-config:/etc/ogm
+      - ./ogm-sandbox/startup.sh:/ogm/.startup.sh
+      - ./ogm-sandbox/bin:/ogm/bin
     links:
       - etcd:etcd
       - mysql:mysql
       - mongo:mongo
       - redis:redis
+      - minio:minio
+    environment:
+      MSA_REGISTRY_PLUGIN: 'etcd'
+      MSA_REGISTRY_ADDRESS: 'etcd:2379'
+    networks:
+      xtc:
+        ipv4_address: 10.1.100.11
 
 networks:
   xtc:
