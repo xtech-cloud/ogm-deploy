@@ -1,9 +1,15 @@
 # Develop
-
-安装容器
+微服务容器只包含ogm-sandbox,需要在sandbox中运行微服务。
 
 ```bash
 docker-compose -f ./docker-compose-dev.yml up -d
+```
+
+# Mini
+包含已发布的微服务容器。
+
+```bash
+docker-compose -f ./docker-compose-mini.yml up -d
 ```
 
 # Small
