@@ -102,7 +102,7 @@ services:
         ipv4_address: 10.1.2.41
 
   ogm-sandbox:
-    image: xtechcloud/ogm-sandbox:v3.12
+    image: xtechcloud/ogm-sandbox:v3.14
     restart: always
     ports:
       - "18800:22"
