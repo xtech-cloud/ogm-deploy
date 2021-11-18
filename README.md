@@ -5,6 +5,13 @@
 docker-compose -f ./docker-compose-dev.yml up -d
 ```
 
+- WSL2额外设置
+如果docker运行在wsl2中，本机可以用localhost访问容器的端口，但是外网无法访问。如果希望外网也能正常访问，需要在powershell中做端口转发，方法如下:
+```
+netsh interface portproxy add v4tov4 listenport=80 listenaddress=0.0.0.0 connectport=80 connectaddress=localhost
+netsh interface portproxy show all
+```
+
 # Mini
 包含已发布的微服务容器。
 
