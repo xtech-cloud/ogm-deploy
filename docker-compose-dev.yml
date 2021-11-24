@@ -34,7 +34,7 @@ services:
         ipv4_address: 10.1.250.11
 
   apisix:
-    image: apache/apisix:2.9-alpine
+    image: apache/apisix:2.10.0-alpine
     restart: always
     volumes:
       - ./apisix/log:/usr/local/apisix/logs
@@ -44,6 +44,7 @@ services:
     ports:
       - "80:9080/tcp"
       - "443:9443/tcp"
+      - "9088:9088/tcp"
     links:
       - etcd:etcd
     networks:
@@ -57,6 +58,7 @@ services:
       - "3306:3306"
     volumes:
       - ./mysql/data:/var/lib/mysql
+      - ./mysql/conf/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
     environment:
       MYSQL_ROOT_PASSWORD: "mysql@XTC"
     networks:
