@@ -157,6 +157,24 @@ services:
       xtc:
         ipv4_address: 10.1.188.10
 
+  ogm-permission:
+    image: xtechcloud/ogm-permission:v3.5.1
+    restart: always
+    ports:
+      - "18812:18812"
+    volumes:
+      - ./ogm-config/permission.yaml:/etc/ogm/permission.yaml
+    links:
+      - etcd:etcd
+      - mysql:mysql
+    environment:
+      MSA_REGISTRY_PLUGIN: 'etcd'
+      MSA_REGISTRY_ADDRESS: 'etcd:2379'
+      MSA_CONFIG_DEFINE: '{"source":"file","prefix":"/etc/ogm/","key":"permission.yaml"}'
+    networks:
+      xtc:
+        ipv4_address: 10.1.188.12
+
 networks:
   xtc:
     driver: bridge
