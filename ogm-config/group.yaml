@@ -1,6 +1,6 @@
 service: 
-    name: xtc.ogm.actor
-    address: :18810
+    name: xtc.ogm.group
+    address: :18809
     ttl: 15
     interval: 10
 logger:
@@ -31,7 +31,4 @@ database:
         # If d <= 0, connections are not closed due to a connection's idle time.
         maxIdleTime: 60 
     sqlite:
-        path: /tmp/ogm-actor.db
-cache:
-    # 驱动类型，可选值为 [memory,redis]
-    driver: memory 
+        path: /tmp/ogm-group.db

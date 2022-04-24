@@ -7,7 +7,7 @@ services:
     restart: always
     volumes:
       - ./etcd/conf/etcd.conf.yml:/opt/bitnami/etcd/conf/etcd.conf.yml
-      - ./etcd/data:/bitnami/etcd/
+      - ./etcd/home:/bitnami/etcd/
     environment:
       ETCD_ENABLE_V2: "true"
       ALLOW_NONE_AUTHENTICATION: "yes"
@@ -102,6 +102,42 @@ services:
     networks:
       xtc:
         ipv4_address: 10.1.2.41
+
+  ogm-account:
+    image: xtechcloud/ogm-account:v3.3.0
+    restart: always
+    ports:
+      - "18801:18801"
+    volumes:
+      - ./ogm-config/account.yaml:/etc/ogm/account.yaml
+    links:
+      - etcd:etcd
+      - mysql:mysql
+    environment:
+      MSA_REGISTRY_PLUGIN: 'etcd'
+      MSA_REGISTRY_ADDRESS: 'etcd:2379'
+      MSA_CONFIG_DEFINE: '{"source":"file","prefix":"/etc/ogm/","key":"account.yaml"}'
+    networks:
+      xtc:
+        ipv4_address: 10.1.188.1
+
+  ogm-group:
+    image: xtechcloud/ogm-group:v3.4.1
+    restart: always
+    ports:
+      - "18809:18809"
+    volumes:
+      - ./ogm-config/group.yaml:/etc/ogm/group.yaml
+    links:
+      - etcd:etcd
+      - mysql:mysql
+    environment:
+      MSA_REGISTRY_PLUGIN: 'etcd'
+      MSA_REGISTRY_ADDRESS: 'etcd:2379'
+      MSA_CONFIG_DEFINE: '{"source":"file","prefix":"/etc/ogm/","key":"group.yaml"}'
+    networks:
+      xtc:
+        ipv4_address: 10.1.188.9
 
   ogm-actor:
     image: xtechcloud/ogm-actor:v3.19.0

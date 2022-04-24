@@ -1,0 +1,24 @@
+service:
+  name: xtc.ogm.account
+  address: :18801
+  ttl: 15
+  interval: 10
+logger:
+  level: info
+  dir: /var/log/ogm/
+database:
+  # 驱动类型，可选值为 [sqlite,mysql]
+  driver: mysql
+  mysql:
+    address: mysql:3306
+    user: ogm
+    password: ogm@MYSQL
+    db: ogm
+  sqlite:
+    path: /tmp/ogm-account.db
+token:
+  jwt:
+    # 过期时间（小时）
+    expiry: 12
+    # jwt密钥
+    secret: c56de585baa85b8d689116a391371035
